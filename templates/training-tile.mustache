@@ -1,0 +1,64 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+
+{{#trainings}}
+    <a class="training-tile" style="display: none;" href="{{{ courseurl }}}" title="{{name}}">
+        <div class="open-training-course">
+            <div class="training-tile-thumbnail">
+                <div class="training-tile-thumbnail-size">
+                    {{#thumbnail}}
+                        <div class="training-tile-thumbnail-resize" aria-hidden="true" data-thumbnail-url="{{thumbnail}}"></div>
+                    {{/thumbnail}}
+                </div>
+                <div class="training-tile-tag">
+                    {{#isreviewer}}
+                        <div class="training-tile-reviewer">
+                            {{# str}}reviewer, block_mytrainings{{/str}}
+                        </div>
+                    {{/isreviewer}}
+                    {{#iscertifying}}
+                        <div class="certifying">
+                            {{# pix }} certifying, local_catalog, {{# str }} certifying, local_mentor_core {{/str}}{{/ pix }}
+                            <p>
+                                {{# str }} certifying, local_mentor_core {{/str}}
+                            </p>
+                        </div>
+                    {{/iscertifying}}
+                </div>
+            </div>
+            <div class="training-tile-information" data-training-id="{{ id }}">
+                {{#name}}
+                    <h3 class="training-name">{{name}}</h3>
+                {{/name}}
+                {{#entityname}}
+                    <div class="training-trainer">
+                        {{# str}}trainings_trainer, block_mytrainings{{/str}} <span class="training-creator">{{entityname}}</span>
+                    </div>
+                {{/entityname}}
+                <div class="training-more-information" data-training-id="{{id}}">
+                    {{#str}} moreinfotile, block_mysessions {{/str}} <i class="fr-fi-arrow-right-line" aria-hidden="true"></i>
+                </div>
+                {{# favouritedesignerdata }}
+                    <button type="button" class="fa fa-star fav" aria-hidden="true" title="{{# str}}removefavourite, block_mytrainings{{/str}}"></button>
+                {{/ favouritedesignerdata }}
+                {{^ favouritedesignerdata }}
+                    <button type="button" class="fa fa-star-o fav " aria-hidden="true" title="{{# str}}addfavourite, block_mytrainings{{/str}}"></button>
+                {{/ favouritedesignerdata }}
+            </div>
+        </div>
+    </a>
+{{/trainings}}

@@ -1,0 +1,325 @@
+@picturewidth: 308px;
+@picturewidthsmalllaptop: 277px;
+@pictureheight: (@picturewidth/3)*2;
+
+@smallscreen: 1440px;
+@picturewidthsmall: 300px;
+@pictureheightsmall: 200px;
+@pictureheightsmalllaptop: 180px;
+
+#page-my-index {
+
+  .block_mytrainings {
+
+    .card-text {
+      margin: 0 !important;
+    }
+
+    .open-block {
+      cursor: pointer;
+      color: #000091;
+      font-size: 20px;
+      margin-right: 8px;
+      position: absolute;
+      right: 13px;
+      top: 11px;
+
+      .txt {
+        font-size: 14px;
+        font-weight: 500;
+        margin-right: 8px;
+        vertical-align: text-bottom;
+
+        @media (max-width: 768px) {
+          display: none;
+        }
+      }
+    }
+
+    &.block_with_controls {
+      .open-block {
+        right: 75px;
+      }
+    }
+
+    .card-title {
+      display: flex !important;
+      justify-content: space-between;
+    }
+
+    &.hidden-block {
+      height: 58px;
+      overflow: hidden;
+
+      @media (max-width: 467px) {
+        height: 80px;
+      }
+
+      .block-mytrainings {
+        display: none;
+      }
+    }
+
+    .block-mytrainings {
+
+      .trainings-grid {
+
+        margin-top: 20px;
+
+        #trainings-tile {
+          margin: 0 auto;
+          display: grid;
+          grid-gap: 10px 2em;
+          grid-template-columns: repeat(auto-fit, minmax(@picturewidth, max-content));
+          justify-content: center;
+
+          @media (max-width: @smallscreen) {
+            grid-template-columns: repeat(auto-fit, minmax(@picturewidthsmall, max-content));
+          }
+
+          @media (width: 1366px) {
+            grid-template-columns: repeat(auto-fit, minmax(@picturewidthsmalllaptop, max-content));
+          }
+
+          &[data-trainingscount="1"] {
+            grid-template-columns: 1fr 2fr;
+
+            @media (max-width: @smallscreen) {
+              grid-template-columns: 1fr 1fr;
+            }
+
+            @media (max-width: 640px) {
+              grid-template-columns: repeat(auto-fit, minmax(@picturewidthsmalllaptop, max-content));
+            }
+          }
+
+          .training-tile {
+            margin: auto auto 25px;
+            width: @picturewidth;
+            padding: 0;
+            border: none;
+            text-align: left;
+
+            @media (max-width: @smallscreen) {
+              width: @picturewidthsmall;
+            }
+
+            @media (width: 1366px) {
+              width: @picturewidthsmalllaptop;
+            }
+
+            &:focus,
+            &:focus-visible{
+              outline: none;
+
+              .training-tile-information {
+                background-color: #EEEEEE;
+              }
+            }
+
+            &:hover {
+              cursor: pointer;
+              text-decoration: none;
+            }
+
+            .training-tile-information {
+              position: relative;
+              height: 146px;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              padding: 9px 15px 15px 16px;
+              border: solid 1px #e5e5e5;
+              background-color: #fff;
+
+              .training-name {
+                font-weight: bold;
+                color: #383838;
+                font-size: 16px;
+
+                @media (width: 1366px) {
+                  font-size: 14px;
+                }
+              }
+
+              .training-trainer {
+                color: #3a3a3a;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                font-size: 14px;
+
+                @media (width: 1366px) {
+                  font-size: 12px;
+                }
+              }
+
+              .training-more-information {
+                color: #000091;
+                font-size: 14px;
+
+                i::after {
+                  vertical-align: middle;
+                  font-size: 20px;
+                }
+
+              }
+
+              .fav {
+                position: absolute;
+                right: 21px;
+                bottom: 17px;
+                background: none;
+                color: inherit;
+                border: none;
+                padding: 0;
+                font: inherit;
+                cursor: pointer;
+                outline: inherit;
+
+                &.fa-star {
+                  &:before {
+                    content: url([[pix:block_mytrainings|shape-o]]);
+                  }
+                }
+
+                &.fa-star-o {
+                  &:before {
+                    content: url([[pix:block_mytrainings|shape]]);
+                  }
+                }
+
+                &:focus {
+                  border: 2px solid #2a7ffe !important;
+                  outline: none;
+                }
+              }
+            }
+
+            .open-training-course {
+              display: block;
+
+              .training-tile-thumbnail {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                background-color: gray;
+
+                .training-tile-tag {
+                  position: absolute;
+                  bottom: 11px;
+                  left: 19px;
+                  display: flex;
+
+                  .training-tile-reviewer {
+                    color: #ffffff;
+                    font-weight: bold;
+                    opacity: 0.75;
+                    border-radius: 12px;
+                    background-color: #000091;
+                    padding: 4px 13px 4px 12px;
+                    display: flex;
+                    align-items: center;
+                    margin-right: 10px;
+                    font-size: 12px;
+
+                    @media (width: 1366px) {
+                      font-size: 10px;
+                    }
+
+                    img {
+                      width: 9px;
+                      height: 10px;
+                    }
+                  }
+                }
+
+                .training-tile-thumbnail-size {
+                  display: flex;
+                  justify-content: center;
+                  height: @pictureheight;
+                  width: 100%;
+
+                  @media (max-width: @smallscreen) {
+                    height: @pictureheightsmall;
+                  }
+
+                  @media (width: 1366px) {
+                    height: @pictureheightsmalllaptop;
+                  }
+
+                  .training-tile-thumbnail-resize {
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    border: solid 1px #e5e5e5;
+                    border-bottom: 0;
+                  }
+                }
+              }
+
+              .training-creator {
+                font-weight: bold;
+              }
+
+              .training-name {
+                font-weight: bold;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                line-height: 24px;
+                margin: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #training-sheet-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    display: none;
+    transition: background-color .3s, transform 0.3s;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .mentor-sheet.block_mytrainings {
+    .list-sessions {
+      display: none;
+    }
+  }
+
+  .button-showless-showmore {
+    background: none;
+    border: none;
+    text-decoration: none;
+    font-size: 14px;
+    color: #000091;
+    cursor: pointer;
+    display: inline;
+    padding: 0;
+    margin: 0;
+    &:focus {
+      border: 2px solid #2a7ffe !important;
+      outline: none;
+    }
+  }
+
+}
