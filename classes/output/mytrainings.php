@@ -67,8 +67,9 @@ class mytrainings implements renderable, templatable {
     private function get_trainings_user_designer() {
         global $USER;
 
+        $searchText = optional_param('search',null,PARAM_RAW);
         // Get all user courses.
-        $trainingcourses = block_mytrainings_get_all_user_trainings($USER->id);
+        $trainingcourses = block_mytrainings_get_all_user_trainings($USER->id,$searchText);
 
         // Add data for template.
         foreach ($trainingcourses as $trainingcourse) {

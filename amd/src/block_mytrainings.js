@@ -13,26 +13,27 @@ define([
         init: function (blockopen) {
             this.blockopen = blockopen;
             var that = this;
-
             // Event for open or close trainings block
-            $('.block_mytrainings .open-block').on('click', function (e) {
-                var openButton = $(e.currentTarget);
-                var blockMyTrainings = $(e.currentTarget).closest('.block_mytrainings')[0];
-                if (blockMyTrainings.classList.contains('hidden-block')) {
-                    // Open block
-                    blockMyTrainings.classList.remove('hidden-block');
-                    openButton.html('<button class="button-showless-showmore" aria-expanded="true">' + M.util.get_string('showless', 'block_mytrainings') + ' -</button>');
-                    that.setUserPreference(1);
-                    // The block must be visible to add images.
-                    that.addImages();
-                } else {
-                    // Close block
-                    blockMyTrainings.classList.add('hidden-block');
-                    openButton.html('<button class="button-showless-showmore" aria-expanded="false">' + M.util.get_string('showmore', 'block_mytrainings') + ' +</button>');
-                    that.setUserPreference(0);
-                }
-            });
-
+            $(document).ready(function (){
+                $('.block_mytrainings .open-block').on('click', function (e) {
+                    var openButton = $(e.currentTarget);
+                    var blockMyTrainings = $(e.currentTarget).closest('.block_mytrainings')[0];
+                    if (blockMyTrainings.classList.contains('hidden-block')) {
+                        // Open block
+                        blockMyTrainings.classList.remove('hidden-block');
+                        openButton.html('<button class="button-showless-showmore" aria-expanded="true">' + M.util.get_string('showless', 'block_mytrainings') + ' -</button>');
+                        that.setUserPreference(1);
+                        // The block must be visible to add images.
+                        that.addImages();
+                    } else {
+                        // Close block
+                        blockMyTrainings.classList.add('hidden-block');
+                        openButton.html('<button class="button-showless-showmore" aria-expanded="false">' + M.util.get_string('showmore', 'block_mytrainings') + ' +</button>');
+                        that.setUserPreference(0);
+                    }
+                });
+            })
+        
             // Init training block pagination
             // 12 trainings per page
             pagination.initPagination($('.block_mytrainings .training-tile'), $('#mytrainings-pagination'), 12, true, this.addImages);

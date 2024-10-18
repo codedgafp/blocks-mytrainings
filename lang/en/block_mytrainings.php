@@ -25,7 +25,7 @@
 
 $string['mytrainings:addinstance'] = 'Add a new my trainings block';
 $string['mytrainings:myaddinstance'] = 'Add my trainings block to Dashboard';
-$string['pluginname'] = 'Mes formations en cours de conception';
+$string['pluginname'] = 'Ma fabrique de formations';
 $string['privacy:metadata'] = 'My trainings block only shows data stored in other locations.';
 $string['certifying'] = 'Certifiante';
 $string['reviewer'] = 'Relecteur';

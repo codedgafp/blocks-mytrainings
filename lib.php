@@ -27,10 +27,11 @@
  *
  *
  * @param int $userid
+ * @param string $searchText
  * @return array
  * @throws dml_exception
  */
-function block_mytrainings_get_all_user_trainings($userid) {
+function block_mytrainings_get_all_user_trainings($userid,$searchText = null) {
     global $DB;
 
     $db = \local_mentor_core\database_interface::get_instance();
@@ -41,6 +42,58 @@ function block_mytrainings_get_all_user_trainings($userid) {
         $hiddencondition .= 'AND c.category NOT IN (' . $allhiddencategoriesids . ')';
     }
 
+    
+    $searchConditions = "";
+    if(!is_null($searchText))
+    {
+        
+        $columns = ["t.typicaljob", "t.skills", "t.idsirh", "t.producingorganization", "t.producerorganizationshortname",
+        "c.fullname", "c.summary", "t.courseshortname", "t.traininggoal", "t.catchphrase", "name"]; 
+       
+        $searchConditions .= "  AND ( (";
+
+        $searchTextArray = explode(",",$searchText);
+        foreach($columns as $keyColumn => $columnValue)
+        {
+           
+                if ($keyColumn === array_key_last($columns)) {
+                    $searchConditions .= " cc.parent IN (SELECT id
+                                        FROM {course_categories}
+                                        WHERE idnumber IS NOT NULL 
+                                         AND ";
+                    foreach ($searchTextArray as $keySearchText=>$valueSearchText)
+                    { 
+                        if( $keySearchText === 0){
+                            $searchConditions .= "unaccent(lower(".$columnValue .")) like lower('%".$valueSearchText."%') 
+                            OR unaccent(lower(idnumber)) like lower('%".$valueSearchText."%') 
+                            ";
+                        }else{
+                            $searchConditions .= " AND unaccent(lower(".$columnValue .")) like lower('%".$valueSearchText."%') 
+                             OR unaccent(lower(idnumber)) like lower('%".$valueSearchText."%') ";
+                        } 
+                    }
+                }else{
+                    foreach ($searchTextArray as $keySearchText=>$valueSearchText)
+                    { 
+                        if( $keySearchText === 0){
+                            $searchConditions .= "unaccent(lower(".$columnValue .")) like lower('%".$valueSearchText."%') ";
+                        }else{
+                            $searchConditions .= " AND unaccent(lower(".$columnValue .")) like lower('%".$valueSearchText."%') ";
+                        } 
+                    } 
+                }
+                      
+            
+            
+            if ($keyColumn != array_key_last($columns)) {
+                $searchConditions .= " ) OR (";
+            }
+        }
+      
+        $searchConditions .= " ))) ";
+    
+    }
+    
     $trainings = $DB->get_records_sql('
             SELECT t.*,
                    c.id as courseid,
@@ -66,7 +119,9 @@ function block_mytrainings_get_all_user_trainings($userid) {
                 ue.userid = :userid AND
                 ue.status = 0
                 ' . $hiddencondition . '
-            GROUP BY t.id, c.id, f.id, ct.id, cc.path
+                ' . $searchConditions . '
+         
+            GROUP BY t.id, c.id, f.id, ct.id, cc.path 
             ORDER BY c.timecreated DESC
         ', [
         'level' => CONTEXT_COURSE,
@@ -74,6 +129,7 @@ function block_mytrainings_get_all_user_trainings($userid) {
         'itemtype' => \local_mentor_core\training::FAVOURITE_DESIGNER,
     ]);
 
+    
     if (empty($trainings)) {
         return [];
     }
