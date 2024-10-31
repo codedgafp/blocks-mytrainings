@@ -6,13 +6,20 @@
 @picturewidthsmall: 300px;
 @pictureheightsmall: 200px;
 @pictureheightsmalllaptop: 180px;
+@size-sm: 375px;
 
 #page-my-index {
 
   .block_mytrainings {
 
     .card-text {
-      margin: 0 !important;
+      
+      @media (min-width: @size-sm) {
+        margin: 0 !important;
+      }
+      @media (max-width: @size-sm) {
+        margin: 0;
+      }
     }
 
     .open-block {
@@ -99,6 +106,10 @@
             padding: 0;
             border: none;
             text-align: left;
+
+            @media (max-width: @size-sm) {
+              margin-left: 5px;
+            }
 
             @media (max-width: @smallscreen) {
               width: @picturewidthsmall;
