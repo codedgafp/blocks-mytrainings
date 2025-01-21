@@ -3,9 +3,9 @@ stages:
   - trigger-mentor-plugins
 
 include:
-  - component: $CI_SERVER_FQDN/devops/cicd/gitlab-ci-toolkit/mentor-submodule-test@mentor
+  - component: $CI_SERVER_FQDN/devops/cicd/gitlab-ci-toolkit/mentor-submodule-test
     inputs:
       submodule_branch: $CI_COMMIT_REF_NAME
       submodule_path: "blocks/mytrainings"
       submodule_testsuite: "mentor_blocks_mytrainings_testsuite"
-  - component: $CI_SERVER_FQDN/devops/cicd/gitlab-ci-toolkit/mentor-submodules-deploy@mentor
+  - component: $CI_SERVER_FQDN/devops/cicd/gitlab-ci-toolkit/mentor-submodules-deploy
