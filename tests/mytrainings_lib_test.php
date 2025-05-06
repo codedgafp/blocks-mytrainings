@@ -27,6 +27,10 @@ defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 
+use block_mytrainings\helper\testhelper;
+
+require_once($CFG->dirroot . '/blocks/mytrainings/lib.php');
+
 class block_mytrainings_lib_testcase extends advanced_testcase {
     /**
      * Reset the singletons
@@ -49,7 +53,6 @@ class block_mytrainings_lib_testcase extends advanced_testcase {
     /**
      * Test block_mytrainings_convert_for_template
      *
-     * @covers ::block_mytrainings_convert_for_template
      */
     public function test_block_mytrainings_convert_for_template_ok() {
         global $USER, $CFG;
@@ -101,6 +104,7 @@ class block_mytrainings_lib_testcase extends advanced_testcase {
         $this->resetAfterTest(true);
         $this->reset_singletons();
 
+        testhelper::create_default_entity($this);
         self::setAdminUser();
 
         $course = self::getDataGenerator()->create_course();
