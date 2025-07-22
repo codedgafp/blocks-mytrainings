@@ -60,12 +60,31 @@ define([
                 }
             });
 
-            $('.block_mytrainings .fav').keypress(function (event) {
-                if (event.which == 13) {
+            $('.block_mytrainings .fav').on('keydown', function (event) {
+                if (event.which == 13  || event.which === 32) {
+                    event.preventDefault();
+                    event.stopPropagation();
                     var currentTarget = $(event.currentTarget);
                     $(currentTarget).click();
                 }
             });
+
+            $(document).on('keydown', '.block_mytrainings .training-tile', function(event) {
+                if (event.which === 32) { // Spacebar
+                    event.preventDefault(); 
+                    this.click();
+                }
+            });
+
+            $(document).on('keydown', '.block_mytrainings .training-more-information', function(event) {
+                if (event.which == 13 || event.which === 32) {
+                    event.preventDefault(); 
+                    event.stopPropagation();
+                    $(this).click(); 
+                }
+            });
+
+
         },
         /**
          * Set user preference
