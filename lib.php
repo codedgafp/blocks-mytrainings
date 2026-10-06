@@ -31,7 +31,8 @@
  * @return array
  * @throws dml_exception
  */
-function block_mytrainings_get_all_user_trainings($userid,$searchText = null) {
+function block_mytrainings_get_all_user_trainings($userid, $searchText = null)
+{
     global $DB;
 
     $db = \local_mentor_core\database_interface::get_instance();
@@ -42,58 +43,101 @@ function block_mytrainings_get_all_user_trainings($userid,$searchText = null) {
         $hiddencondition .= 'AND c.category NOT IN (' . $allhiddencategoriesids . ')';
     }
 
-    
+    $params = [
+        'level' => CONTEXT_COURSE,
+        'userid' => $userid,
+        'itemtype' => \local_mentor_core\training::FAVOURITE_DESIGNER,
+    ];
     $searchConditions = "";
-    if(!is_null($searchText))
-    {
-        
-        $columns = ["t.typicaljob", "t.skills", "t.idsirh", "t.producingorganization", "t.producerorganizationshortname",
-        "c.fullname", "c.summary", "t.courseshortname", "t.traininggoal", "t.catchphrase", "name"]; 
-       
-        $searchConditions .= "  AND ( (";
 
-        $searchTextArray = explode(",",$searchText);
-        foreach($columns as $keyColumn => $columnValue)
-        {
-           
-                if ($keyColumn === array_key_last($columns)) {
-                    $searchConditions .= " cc.parent IN (SELECT id
-                                        FROM {course_categories}
-                                        WHERE idnumber IS NOT NULL 
-                                         AND ";
-                    foreach ($searchTextArray as $keySearchText=>$valueSearchText)
-                    { 
-                        if( $keySearchText === 0){
-                            $searchConditions .= "unaccent(lower(".$columnValue .")) like lower('%".$valueSearchText."%') 
-                            OR unaccent(lower(idnumber)) like lower('%".$valueSearchText."%') 
-                            ";
-                        }else{
-                            $searchConditions .= " AND unaccent(lower(".$columnValue .")) like lower('%".$valueSearchText."%') 
-                             OR unaccent(lower(idnumber)) like lower('%".$valueSearchText."%') ";
-                        } 
-                    }
-                }else{
-                    foreach ($searchTextArray as $keySearchText=>$valueSearchText)
-                    { 
-                        if( $keySearchText === 0){
-                            $searchConditions .= "unaccent(lower(".$columnValue .")) like lower('%".$valueSearchText."%') ";
-                        }else{
-                            $searchConditions .= " AND unaccent(lower(".$columnValue .")) like lower('%".$valueSearchText."%') ";
-                        } 
-                    } 
-                }
-                      
-            
-            
-            if ($keyColumn != array_key_last($columns)) {
-                $searchConditions .= " ) OR (";
+    if (!empty($searchText)) {
+
+        $columns = [
+            't.typicaljob',
+            't.skills',
+            't.idsirh',
+            't.producingorganization',
+            't.producerorganizationshortname',
+            'c.fullname',
+            'c.summary',
+            't.courseshortname',
+            't.traininggoal',
+            't.catchphrase',
+            'name'
+        ];
+
+        $searchTextArray = array_values(array_filter(
+            array_map('trim', explode(',', $searchText)),
+            static function ($value) {
+                return $value !== '';
             }
+        ));
+        if (!empty($searchTextArray)) {
+            $searchConditions .= ' AND (';
+            $paramindex = 0;
+
+            foreach ($columns as $keyColumn => $columnValue) {
+
+                if ($keyColumn > 0) {
+                    $searchConditions .= ' OR ';
+                }
+
+                $searchConditions .= '(';
+
+                if ($columnValue === 'name') {
+
+                    $searchConditions .= '
+                        cc.parent IN (
+                        SELECT id
+                        FROM {course_categories}
+                        WHERE idnumber IS NOT NULL
+                        AND (
+                        ';
+
+                    foreach ($searchTextArray as $keySearchText => $valueSearchText) {
+
+                        if ($keySearchText > 0) {
+                            $searchConditions .= ' AND ';
+                        }
+
+                        $paramname1 = 'search' . $paramindex++;
+                        $paramname2 = 'search' . $paramindex++;
+
+                        $searchConditions .= "
+                            (
+                            unaccent(lower(name)) LIKE (lower(:{$paramname1}))
+                            OR
+                            unaccent(lower(idnumber)) LIKE (lower(:{$paramname2}))
+                            )
+                            ";
+
+                        $params[$paramname1] = '%' . $valueSearchText . '%';
+                        $params[$paramname2] = '%' . $valueSearchText . '%';
+                    }
+
+                    $searchConditions .= ')
+                )';
+                } else {
+
+                    foreach ($searchTextArray as $keySearchText => $valueSearchText) {
+
+                        if ($keySearchText > 0) {
+                            $searchConditions .= ' AND ';
+                        }
+                        $paramname = 'search' . $paramindex++;
+                        $searchConditions .= "
+                            unaccent(lower({$columnValue}))
+                            LIKE (lower(:{$paramname}))
+                            ";
+                        $params[$paramname] = '%' . $valueSearchText . '%';
+                    }
+                }
+                $searchConditions .= ')';
+            }
+            $searchConditions .= ')';
         }
-      
-        $searchConditions .= " ))) ";
-    
     }
-    
+
     $trainings = $DB->get_records_sql('
             SELECT t.*,
                    c.id as courseid,
@@ -123,13 +167,9 @@ function block_mytrainings_get_all_user_trainings($userid,$searchText = null) {
          
             GROUP BY t.id, c.id, f.id, ct.id, cc.path 
             ORDER BY c.timecreated DESC
-        ', [
-        'level' => CONTEXT_COURSE,
-        'userid' => $userid,
-        'itemtype' => \local_mentor_core\training::FAVOURITE_DESIGNER,
-    ]);
+        ', $params);
 
-    
+
     if (empty($trainings)) {
         return [];
     }
@@ -156,7 +196,6 @@ function block_mytrainings_get_all_user_trainings($userid,$searchText = null) {
     }
 
     return $alltrainings;
-
 }
 
 /**
