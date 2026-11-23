@@ -16,7 +16,7 @@
 }}
 
 {{#trainings}}
-    <a class="training-tile" style="display: none;" href="{{{ courseurl }}}" title="{{name}}">
+    <div class="training-tile" style="display: none;" title="{{name}}">
         <div class="open-training-course">
             <div class="training-tile-thumbnail">
                 <div class="training-tile-thumbnail-size">
@@ -24,11 +24,17 @@
                         <div class="training-tile-thumbnail-resize" aria-hidden="true" data-thumbnail-url="{{thumbnail}}"></div>
                     {{/thumbnail}}
                 </div>
+            </div>
+            <div class="training-tile-information" data-training-id="{{ id }}">
+                {{#name}}
+                    <a href="{{{ courseurl }}}" class="block-training-tile-url training-name">{{name}}</a>
+                {{/name}}
+
                 <div class="training-tile-tag">
                     {{#isreviewer}}
-                        <div class="training-tile-reviewer">
+                        <p class="training-tile-reviewer">
                             {{# str}}reviewer, block_mytrainings{{/str}}
-                        </div>
+                        </p>
                     {{/isreviewer}}
                     {{#iscertifying}}
                         <div class="certifying">
@@ -39,11 +45,7 @@
                         </div>
                     {{/iscertifying}}
                 </div>
-            </div>
-            <div class="training-tile-information" data-training-id="{{ id }}">
-                {{#name}}
-                    <h3 class="training-name">{{name}}</h3>
-                {{/name}}
+
                 {{#entityname}}
                     <div class="training-trainer">
                         {{# str}}trainings_trainer, block_mytrainings{{/str}} <span class="training-creator">{{entityname}}</span>
@@ -60,5 +62,5 @@
                 {{/ favouritedesignerdata }}
             </div>
         </div>
-    </a>
+    </div>
 {{/trainings}}

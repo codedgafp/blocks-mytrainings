@@ -175,7 +175,6 @@
                   vertical-align: middle;
                   font-size: 20px;
                 }
-
               }
 
               .fav {
@@ -207,6 +206,34 @@
                   outline: none;
                 }
               }
+
+              .training-tile-tag {
+                position: absolute;
+                top: -40px;
+                display: flex;
+
+                .training-tile-reviewer {
+                  color: #ffffff;
+                  font-weight: bold;
+                  opacity: 0.75;
+                  border-radius: 12px;
+                  background-color: #000091;
+                  padding: 4px 13px 4px 12px;
+                  display: flex;
+                  align-items: center;
+                  margin-right: 10px;
+                  font-size: 12px;
+
+                  @media (width: 1366px) {
+                    font-size: 10px;
+                  }
+
+                  img {
+                    width: 9px;
+                    height: 10px;
+                  }
+                }
+              }
             }
 
             .open-training-course {
@@ -217,35 +244,6 @@
                 display: flex;
                 justify-content: center;
                 background-color: gray;
-
-                .training-tile-tag {
-                  position: absolute;
-                  bottom: 11px;
-                  left: 19px;
-                  display: flex;
-
-                  .training-tile-reviewer {
-                    color: #ffffff;
-                    font-weight: bold;
-                    opacity: 0.75;
-                    border-radius: 12px;
-                    background-color: #000091;
-                    padding: 4px 13px 4px 12px;
-                    display: flex;
-                    align-items: center;
-                    margin-right: 10px;
-                    font-size: 12px;
-
-                    @media (width: 1366px) {
-                      font-size: 10px;
-                    }
-
-                    img {
-                      width: 9px;
-                      height: 10px;
-                    }
-                  }
-                }
 
                 .training-tile-thumbnail-size {
                   display: flex;

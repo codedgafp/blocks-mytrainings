@@ -69,13 +69,6 @@ define([
                 }
             });
 
-            $(document).on('keydown', '.block_mytrainings .training-tile', function(event) {
-                if (event.which === 32) { // Spacebar
-                    event.preventDefault(); 
-                    this.click();
-                }
-            });
-
             $(document).on('keydown', '.block_mytrainings .training-more-information', function(event) {
                 if (event.which == 13 || event.which === 32) {
                     event.preventDefault(); 
@@ -84,7 +77,19 @@ define([
                 }
             });
 
+            $('.block_mytrainings .training-tile').on('click', function (e) {
+                const url = $(e.currentTarget).find('.block-training-tile-url').attr('href');
 
+                window.location.href = url;
+            });
+
+            $(document).on('keydown', '.block_mytrainings .block-training-tile-url', function(event) {
+                if (event.which == 13 || event.which === 32) {
+                    event.preventDefault(); 
+                    event.stopPropagation();
+                    $(this).click(); 
+                }
+            });
         },
         /**
          * Set user preference
